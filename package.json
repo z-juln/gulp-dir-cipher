@@ -1,0 +1,37 @@
+{
+  "name": "gulp-dir-cipher",
+  "version": "1.0.0",
+  "description": "gulp-dir-cipher",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "files": [
+    "dist/*",
+    "src/*"
+  ],
+  "scripts": {
+    "test": "ts-node src/__test__.ts",
+    "build": "npx tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/z-juln/gulp-dir-cipher.git"
+  },
+  "homepage": "https://github.com/z-juln/gulp-dir-cipher/README.md",
+  "keywords": [
+    "base64",
+    "blowfish",
+    "cipher",
+    "decipher",
+    "crypto"
+  ],
+  "author": "juln",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/gulp": "^4.0.10",
+    "@types/node": "^20.2.3",
+    "@types/vinyl": "^2.0.7",
+    "gulp": "^4.0.2",
+    "typescript": "^4.7.4"
+  }
+}
