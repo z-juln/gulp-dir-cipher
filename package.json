@@ -1,6 +1,6 @@
 {
   "name": "gulp-dir-cipher",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "gulp-dir-cipher",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
