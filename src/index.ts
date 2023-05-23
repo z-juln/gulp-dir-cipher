@@ -26,7 +26,8 @@ const gulpDirCipher = (password: string, mode: 'encoding' | 'decoding' = 'encodi
         const newBasename = mode === 'encoding'
           ? btoa(file.basename).replace('/', '-')
           : atob(file.basename.replace('-', '/'));
-        file.path = path.join(file.base, newBasename);
+        console.log('filename', file.dirname, newBasename)
+        file.path = path.join(file.dirname, newBasename);
       } catch (error: any) {
         if (cfg.debug) {
           console.log('  parseFilename error:\n' + '    file: ' + path.join(file.base, file.basename) + '\n    errMsg: ' + error?.message ?? error + '\n');

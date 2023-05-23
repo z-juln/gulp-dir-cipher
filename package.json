@@ -9,7 +9,7 @@
     "src/*"
   ],
   "scripts": {
-    "test": "ts-node src/__test__.ts",
+    "test": "ts-node src/__test__/index.ts",
     "build": "npx tsc",
     "prepublishOnly": "npm run build"
   },
