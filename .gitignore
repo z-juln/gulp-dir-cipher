@@ -19,3 +19,6 @@ yarn-error.log
 *.log
 
 .font-spider
+
+test-build
+test-source

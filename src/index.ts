@@ -9,6 +9,9 @@ import type File from 'vinyl';
 const gulpDirCipher = (password: string, mode: 'encoding' | 'decoding' = 'encoding', cfg = { debug: false }): NodeJS.ReadWriteStream => {
   const iv = password.split('').reverse().join('');
 
+  /** 统计目录映射 */
+  const dirRecords: { originalDir: string; finallyDir: string; }[] = [];
+
   function transform(this: Transform, originalFile: File, encoding: BufferEncoding, callback: (error?: Error | null, data?: File) => void) {
     const cipher = crypto.createCipheriv("blowfish", password, iv);
     const decipher = crypto.createDecipheriv("blowfish", password, iv);
@@ -23,11 +26,17 @@ const gulpDirCipher = (password: string, mode: 'encoding' | 'decoding' = 'encodi
     const parseFilename = () => {
       // base64
       try {
+        // 可能之前目录名就改变过, 路径就要跟着更新
+        const mayBeDir = dirRecords.find(({ originalDir }) => originalDir === file.dirname)?.finallyDir;
+
         const newBasename = mode === 'encoding'
           ? btoa(file.basename).replace('/', '-')
           : atob(file.basename.replace('-', '/'));
-        console.log('filename', file.dirname, newBasename)
-        file.path = path.join(file.dirname, newBasename);
+        const newPath = path.join(mayBeDir ?? file.dirname, newBasename);
+        if (file.isDirectory()) {
+          dirRecords.push({ originalDir: file.path, finallyDir: newPath });
+        }
+        file.path = newPath;
       } catch (error: any) {
         if (cfg.debug) {
           console.log('  parseFilename error:\n' + '    file: ' + path.join(file.base, file.basename) + '\n    errMsg: ' + error?.message ?? error + '\n');
