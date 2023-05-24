@@ -5,6 +5,9 @@ import { atob, btoa } from 'buffer';
 import type { Transform } from 'stream';
 import type File from 'vinyl';
 
+export const encodeDirname = (dirname: string) => btoa(dirname).replace('/', '-');
+export const decodeDirname = (dirname: string) => atob(dirname.replace('-', '/'));
+
 /** base64 + blowfish */
 const gulpDirCipher = (password: string, mode: 'encoding' | 'decoding' = 'encoding', cfg = { debug: false }): NodeJS.ReadWriteStream => {
   const iv = password.split('').reverse().join('');
@@ -30,9 +33,7 @@ const gulpDirCipher = (password: string, mode: 'encoding' | 'decoding' = 'encodi
           // 可能之前目录名就改变过, 路径就要跟着更新
           const mayBeDir = dirRecords.find(({ originalDir }) => originalDir === file.dirname)?.finallyDir;
 
-          const newBasename = mode === 'encoding'
-            ? btoa(file.basename).replace('/', '-')
-            : atob(file.basename.replace('-', '/'));
+          const newBasename = (mode === 'encoding' ? encodeDirname : decodeDirname)(file.basename);
           const newPath = path.join(mayBeDir ?? file.dirname, newBasename);
           if (file.isDirectory()) {
             dirRecords.push({ originalDir: file.path, finallyDir: newPath });

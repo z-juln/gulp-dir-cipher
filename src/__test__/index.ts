@@ -2,7 +2,7 @@ import gulp from 'gulp';
 import gulpDirCipher from '..';
 import { rmdirSync, existsSync } from 'fs';
 
-const password = 'ju';
+const password = 'juln1234';
 
 if (existsSync('./test-build')) {
   rmdirSync('./test-build', { recursive: true });
