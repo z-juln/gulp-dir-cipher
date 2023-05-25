@@ -10,9 +10,13 @@ gulp中间件: gulp-dir-cipher, 使用base64+blowfish的方式, 对整个目录�
 
 ```typescript
 import gulp from 'gulp';
-import gulpDirCipher, { encodeDirname, decodeDirname } from 'gulp-dir-cipher';
+import gulpDirCipher, { checkPassword, encodeDirname, decodeDirname } from 'gulp-dir-cipher';
 
 const password = 'juln1234';
+
+if (!checkPassword(password)) {
+  process.exit();
+}
 
 // encoding
 gulp.src(['/Volumes/dev/gulp-dir-cipher/src/**/**', '!/Volumes/dev/gulp-dir-cipher/src'])

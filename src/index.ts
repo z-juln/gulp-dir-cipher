@@ -5,6 +5,7 @@ import { atob, btoa } from 'buffer';
 import type { Transform } from 'stream';
 import type File from 'vinyl';
 
+export const checkPassword = (password: string) => Buffer.from(password).length === 8;
 export const encodeDirname = (dirname: string) => btoa(dirname).replace('/', '-');
 export const decodeDirname = (dirname: string) => atob(dirname.replace('-', '/'));
 
@@ -16,6 +17,10 @@ const gulpDirCipher = (password: string, mode: 'encoding' | 'decoding' = 'encodi
   const dirRecords: { originalDir: string; finallyDir: string; }[] = [];
 
   function transform(this: Transform, originalFile: File, encoding: BufferEncoding, callback: (error?: Error | null, data?: File) => void) {
+    if (!checkPassword(password)) {
+      callback(new Error('the password is illegal and must consist of an 8-byte string'));
+      return;
+    }
     try {
       const cipher = crypto.createCipheriv("blowfish", password, iv);
       const decipher = crypto.createDecipheriv("blowfish", password, iv);
